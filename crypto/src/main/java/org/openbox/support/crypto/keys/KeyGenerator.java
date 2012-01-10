@@ -1,13 +1,12 @@
 package org.openbox.support.crypto.keys;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 import java.security.Security;
+import java.util.Properties;
 
 import org.openbox.support.Utils;
 
@@ -18,16 +17,28 @@ import org.openbox.support.Utils;
  */
 public class KeyGenerator {
 
+	private static final String KEYPAIR_ALGO = "keypair.algorithm";
+	private static final String KEYPAIR_PROV = "keypair.provider";
+	private static final String KEYPAIR_SIZE = "keypair.size";
+
+	private static Properties config = null;
+
 	static {
 		/** this registers the SC provider */
 		Security.addProvider(new org.spongycastle.jce.provider.BouncyCastleProvider());
+		if (config == null) {
+			config = Utils.readProperties("keygen.properties");
+		}
 	}
 
 	public KeyPair generateKeyPair(long seed) throws NoSuchAlgorithmException,
 			NoSuchProviderException {
 		SecureRandom randomSeed = new SecureRandom(Utils.toBytes(seed));
-		KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA", "SC");
-		keyGen.initialize(512, randomSeed);
+		KeyPairGenerator keyGen = KeyPairGenerator.getInstance(
+				config.getProperty(KEYPAIR_ALGO),
+				config.getProperty(KEYPAIR_PROV));
+		keyGen.initialize(Integer.parseInt(config.getProperty(KEYPAIR_SIZE)),
+				randomSeed);
 		KeyPair keyPair = keyGen.generateKeyPair();
 		return keyPair;
 	}

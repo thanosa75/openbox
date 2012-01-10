@@ -1,4 +1,8 @@
 package org.openbox.support;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
  
 /**
  * Global support utility methods gathered here.
@@ -41,5 +45,55 @@ public final class Utils {
 	    writeBuffer[6] = (byte)(v >>>  8);
 	    writeBuffer[7] = (byte)(v >>>  0);
 	    return writeBuffer;
+	}
+	
+	public static final Properties readProperties(String propertiesName) {
+		InputStream in = Utils.class.getResourceAsStream("/"+propertiesName);
+		Properties p = new Properties();
+		try {
+			p.load(in);
+		} catch (IOException e) {
+			Log.error("Failed to load properties from "+propertiesName);
+		} finally {
+			try {
+				in.close();
+			} catch (IOException e) {
+			}
+		}
+		return p;
+	}
+
+	/**
+	 * 
+	 * @param providerName
+	 * @return
+	 */
+	public static <T> T createClass(String providerName) {
+		Class clazz = null;
+		
+		try {
+			clazz = Class.forName(providerName);
+			Object obj = clazz.newInstance();
+			return (T)obj;
+		} catch (ClassNotFoundException e) {
+			if (!Log.READY) {
+				e.printStackTrace();
+			} else {
+				Log.error("Class not found, "+e.getMessage(),e);
+			}
+		} catch (InstantiationException e) {
+			if (!Log.READY) {
+				e.printStackTrace();
+			} else {
+				Log.error("Failed to instanciate class, "+e.getMessage(),e);
+			}
+		} catch (IllegalAccessException e) {
+			if (!Log.READY) {
+				e.printStackTrace();
+			} else {
+				Log.error("Failed to access class, "+e.getMessage(),e);
+			}
+		}
+		throw new RuntimeException("createClass() failed - please check previous log entries for causes");
 	}
 }
