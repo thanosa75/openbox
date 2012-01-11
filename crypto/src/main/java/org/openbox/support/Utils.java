@@ -3,6 +3,8 @@ package org.openbox.support;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+
+import org.openbox.support.logging.Log;
  
 /**
  * Global support utility methods gathered here.

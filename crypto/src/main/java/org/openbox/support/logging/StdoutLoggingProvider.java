@@ -1,4 +1,4 @@
-package org.openbox.support;
+package org.openbox.support.logging;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

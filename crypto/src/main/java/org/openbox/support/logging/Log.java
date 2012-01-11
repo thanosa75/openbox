@@ -1,6 +1,8 @@
-package org.openbox.support;
+package org.openbox.support.logging;
 
 import java.util.Properties;
+
+import org.openbox.support.Utils;
 
 
 /**

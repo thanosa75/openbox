@@ -1,4 +1,4 @@
-package org.openbox.support;
+package org.openbox.support.logging;
 
 /**
  * a service provider interface for pluggable logging.
