@@ -17,11 +17,11 @@ import org.openbox.support.Utils;
  */
 public class KeyGenerator {
 
-	private static final String KEYPAIR_ALGO = "keypair.algorithm";
+	public static final String KEYPAIR_ALGO = "keypair.algorithm";
 	private static final String KEYPAIR_PROV = "keypair.provider";
 	private static final String KEYPAIR_SIZE = "keypair.size";
 
-	private static Properties config = null;
+	public static Properties config = null;
 
 	static {
 		/** this registers the SC provider */
@@ -43,4 +43,6 @@ public class KeyGenerator {
 		return keyPair;
 	}
 
+	
+	
 }
